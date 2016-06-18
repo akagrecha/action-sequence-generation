@@ -27,7 +27,7 @@ else:
 			break
 
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		gray = cv2.GaussianBlur(gray, (11, 11), 0)
+		gray = cv2.GaussianBlur(gray, (21,21), 0)
 
 		if firstFrame == None:
 			firstFrame = gray
@@ -36,6 +36,7 @@ else:
 		frameDelta = cv2.absdiff(firstFrame, gray)
 		fgmask = cv2.threshold(frameDelta, 50, 255, 0)[1]
 		bgmask = cv2.bitwise_not(fgmask)
+		
 		foreground = cv2.bitwise_and(frame, frame, mask = fgmask)
 		background = cv2.bitwise_and(frame, frame, mask = bgmask)
 
@@ -62,7 +63,7 @@ else:
 	background = img_bg[0]
 	for i in frame_no:
 		foreground = cv2.bitwise_or(img_fg[i], foreground)
-		background = cv2.bitwise_or(img_bg[i], background)
+		background = cv2.bitwise_and(img_bg[i], background)
 	
 	result = cv2.bitwise_or(foreground, background)
 	
